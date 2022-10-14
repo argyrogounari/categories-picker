@@ -7,10 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.argyrogounari.categories.CategoriesPicker
+import com.argyrogounari.categories.models.Category
 import com.example.categories.databinding.ActivityMainBinding
-import com.google.android.material.snackbar.Snackbar
 import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
@@ -19,8 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     var dbHeplper: DatabaseHelper? = null
-    var lvUsers:
-            List<String>? = null
+    var categoriesList = ArrayList<Category>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,12 +26,13 @@ class MainActivity : AppCompatActivity() {
         dbHeplper = DatabaseHelper(applicationContext)
         try {
             dbHeplper!!.createDataBase()
-            dbHeplper!!.getActivities()
+            categoriesList = dbHeplper!!.getActivities()
         } catch (e: IOException) {
             e.printStackTrace()
         }
 
-        CategoriesPicker().s(this.applicationContext, "Heya!!!!!!")
+        val categoriesPicker = CategoriesPicker.newInstance(categoriesList)
+        categoriesPicker.s(this.applicationContext, "Heya!!!!!!")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -7,16 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.argyrogounari.categories.models.Category
 
 class CategoriesPicker : Fragment() {
-    val categories = ArrayList<String>()
+    var categories = ArrayList<Category>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
-        for (i in 1..20) {
-            categories.add("Item " + i)
+        val args = arguments
+        if (args != null) {
+            categories = args.getParcelableArrayList<Category>("CategoryList") as ArrayList<Category>
         }
     }
 
@@ -32,5 +32,15 @@ class CategoriesPicker : Fragment() {
 
     fun s(c: Context?, message: String?) {
         Toast.makeText(c, message, Toast.LENGTH_SHORT).show()
+    }
+
+    companion object {
+        fun newInstance(categoriesList : ArrayList<Category>): CategoriesPicker {
+            val args = Bundle()
+            args.putParcelableArrayList("categoriesList", categoriesList)
+            val fragment = CategoriesPicker()
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

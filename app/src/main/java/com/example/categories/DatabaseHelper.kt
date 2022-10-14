@@ -5,7 +5,9 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
+import android.graphics.Color
 import android.util.Log
+import com.argyrogounari.categories.models.Category
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
@@ -32,6 +34,7 @@ class DatabaseHelper(
             } catch (e: IOException) {
                 Log.e("tle99 - create", e.message!!)
             }
+            this.close()
         }
     }
 
@@ -39,26 +42,28 @@ class DatabaseHelper(
         TODO("Not yet implemented")
     }
 
-    fun getActivities(): List<String>? {
-        val listUsers: MutableList<String> = ArrayList()
+    fun getActivities(): ArrayList<Category> {
+        val categoriesList: ArrayList<Category> = ArrayList<Category>()
         val db = this.writableDatabase
         val c: Cursor?
         try {
             c = db.rawQuery("SELECT * FROM $PUBLIC_ACTIVITIES", null)
-            if (c == null) return null
-            var name: String
+            if (c == null) return categoriesList
             c.moveToFirst()
             do {
-                name = c.getString(1)
-                listUsers.add(name)
-                println(name)
+                val name = c.getString(0)
+                val category = c.getString(1)
+                val color = c.getString(2)
+                val emoji = c.getString(3)
+                categoriesList.add(Category(name, category, color, emoji))
+                println("Name: $name Category: $category Color: $color Emoji: $emoji\n")
             } while (c.moveToNext())
             c.close()
         } catch (e: java.lang.Exception) {
             Log.e("tle99", e.message!!)
         }
         db.close()
-        return listUsers
+        return categoriesList
     }
 
     private fun databaseExists(): Boolean {
