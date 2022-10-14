@@ -27,7 +27,6 @@ class CategoriesPicker : Fragment() {
     ): View? {
         var recyclerview = inflater.inflate(R.layout.recyclerview, parent, false)
         return recyclerview
-
     }
 
     fun s(c: Context?, message: String?) {

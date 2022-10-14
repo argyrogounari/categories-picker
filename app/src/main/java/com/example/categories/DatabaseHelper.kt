@@ -5,7 +5,6 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
-import android.graphics.Color
 import android.util.Log
 import com.argyrogounari.categories.models.Category
 import java.io.FileOutputStream
@@ -13,16 +12,9 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 
-
 class DatabaseHelper(
     private val context: Context?,
 ) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
-
-
-
-    override fun onCreate(db: SQLiteDatabase?) {
-
-    }
 
     @Throws(IOException::class)
     fun createDataBase() {
@@ -36,10 +28,6 @@ class DatabaseHelper(
             }
             this.close()
         }
-    }
-
-    override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
-        TODO("Not yet implemented")
     }
 
     fun getActivities(): ArrayList<Category> {
@@ -99,11 +87,13 @@ class DatabaseHelper(
         }
     }
 
+    override fun onCreate(db: SQLiteDatabase?) {}
+    override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {}
+
     companion object{
         var DB_PATH = "/data/data/com.example.categories/databases/"
         var DB_NAME = "database.db"
         val DB_VERSION = 1
         val PUBLIC_ACTIVITIES = "PUBLIC_ACTIVITIES"
-        val db: SQLiteDatabase? = null
     }
 }
