@@ -2,6 +2,8 @@ package com.example.categories
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
 import com.argyrogounari.categories.CategoriesPicker
 import com.argyrogounari.categories.models.Category
 import java.io.IOException
@@ -12,6 +14,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.main_activity)
 
         dbHeplper = DatabaseHelper(applicationContext)
         try {
@@ -21,7 +24,17 @@ class MainActivity : AppCompatActivity() {
             e.printStackTrace()
         }
 
-        val categoriesPicker = CategoriesPicker.newInstance(categoriesList)
-        categoriesPicker.s(this.applicationContext, "Heya!!!!!!")
+        if (savedInstanceState == null) {
+            val bundle = Bundle()
+            bundle.putParcelableArrayList("categoriesList", categoriesList)
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                add<CategoriesPicker>(R.id.fragment_container_view, "CategoriesPickerFragment", args = bundle)
+            }
+        }
+
+        supportFragmentManager.executePendingTransactions();
+        val categoriesPickerFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view) as CategoriesPicker
+        categoriesPickerFragment.s(this.applicationContext, "Heya!!!!!!")
     }
 }
