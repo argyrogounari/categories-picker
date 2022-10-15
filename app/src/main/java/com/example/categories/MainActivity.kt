@@ -32,9 +32,5 @@ class MainActivity : AppCompatActivity() {
                 add<CategoriesPicker>(R.id.fragment_container_view, "CategoriesPickerFragment", args = bundle)
             }
         }
-
-        supportFragmentManager.executePendingTransactions();
-        val categoriesPickerFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view) as CategoriesPicker
-        categoriesPickerFragment.s(this.applicationContext, "Heya!!!!!!")
     }
 }
